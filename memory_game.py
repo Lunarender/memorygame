@@ -42,7 +42,7 @@ def quizboard():
                 draw(board1[i][j], i, j)
                 count += 1
     if count == 16:
-        base1.create_text(200, 450, text="Antal flyttningar: " + str(moves1), font=('helvetica', 20))
+        base1.create_text(200, 450, text="Antal drag: " + str(moves1), font=('helvetica', 20))
 
 
 def call(event):
@@ -154,7 +154,7 @@ def puzzleboard2():
                 draw1(board2[i][j], i, j)
                 count += 1
     if count >= 36:
-        base2.create_text(300, 650, text="Antal flyttningar: " + str(moves2), font=('helvetica', 20))
+        base2.create_text(300, 650, text="Antal drag: " + str(moves2), font=('helvetica', 20))
 
 
 def call2(event):
@@ -301,7 +301,7 @@ def quizboard3():
                 draw2(board3[i][j], i, j)
                 count += 1
     if count >= 64:
-        base3.create_text(300, 650, text="Antal flyttningar: " + str(moves3), font=('helvetica', 20))
+        base3.create_text(300, 650, text="Antal drag: " + str(moves3), font=('helvetica', 20))
 
 
 def call3(event):
