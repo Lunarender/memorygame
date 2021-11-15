@@ -4,7 +4,7 @@ from tkinter import ttk
 
 PuzzleWindow = Tk()
 
-PuzzleWindow.title('Memory Puzzle Game')
+PuzzleWindow.title('Memory Puzzle Spel')
 
 tabs = ttk.Notebook(PuzzleWindow)
 easy = ttk.Frame(tabs)
@@ -62,7 +62,7 @@ def call(event):
         board1[i][j] = ans1[i][j]
         quizboard()
         if (ans1[i][j] == board1[prev1[0]][prev1[1]]):
-            print("matched")
+            print("Matchade!")
             prev1 = [100, 100]
             quizboard()
             return
@@ -203,9 +203,9 @@ puzzleboard2()
 
 """level 3"""
 window3 = ttk.Frame(tabs)
-tabs.add(easy, text='Easy')
-tabs.add(window2, text='medium')
-tabs.add(window3, text='Hard')
+tabs.add(easy, text='Enkel')
+tabs.add(window2, text='Mellan')
+tabs.add(window3, text='Svår')
 tabs.pack(expand=1, fill="both")
 
 
@@ -320,7 +320,7 @@ def call3(event):
         board3[i][j] = ans3[i][j]
         quizboard3()
         if (ans3[i][j] == board3[prev3[0]][prev3[1]]):
-            print("matched")
+            print("Matchade!")
             prev3 = [100, 100]
             quizboard3()
             return
