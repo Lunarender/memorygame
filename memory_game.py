@@ -1,7 +1,6 @@
 from tkinter import *
 import random
 from tkinter import ttk
-from pygame import *
 import pygame
 
 PuzzleWindow = Tk()
@@ -16,7 +15,7 @@ tabs.pack(expand=10, fill="both")
 def add_background_music():
     """Adding background music"""
     pygame.mixer.init()
-    pygame.mixer.music.load('crash.wav.mp3')
+    pygame.mixer.music.load('background_music.mp3')
     pygame.mixer.music.play(loops=-1)
 
 
@@ -91,7 +90,7 @@ def call(event):
             return
 
 
-base1 = Canvas(easy, width=500, height=500)
+base1 = Canvas(easy, width=400, height=500)
 base1.pack()
 
 ans1 = list('AABBCCDDEEFFGGHH')
