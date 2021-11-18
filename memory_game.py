@@ -1,31 +1,31 @@
 from tkinter import *
 import random
 from tkinter import ttk
+from pygame import *
+import pygame
 
 PuzzleWindow = Tk()
-
-
-"""
-from PIL import ImageTk, Image
-
-img = ImageTk.PhotoImage(Image.open("bild.gif"))
-panel = Label(PuzzleWindow, image = img)
-panel.pack(side = "bottom", fill = "both", expand = "yes"
-PuzzleWindow.mainloop()
-"""
 PuzzleWindow.title(' Minnes Spel ')
 tabs = ttk.Notebook(PuzzleWindow)
 easy = ttk.Frame(tabs)
+
 tabs.add(easy, text='Enkel')
-tabs.pack(expand=1, fill="both")
+tabs.pack(expand=10, fill="both")
+
+
+def add_background_music():
+    """Adding background music"""
+    pygame.mixer.init()
+    pygame.mixer.music.load('crash.wav.mp3')
+    pygame.mixer.music.play(loops=-1)
+
 
 """Level 1"""
 
 
 def draw(a, x, y):
-    """This function displays the card present at row index i and
-     column index j by creating a shape of assigned color.
-     x = row index, y = column index"""
+    """This function displays the card present at row index x and
+     column index y by creating a shape of assigned color."""
     global base1
     if a == 'A':
         base1.create_rectangle(100 * x + 20, y * 100 + 20, 100 * x + 100 - 20, 100 * y + 100 - 20, fill='red')
@@ -96,7 +96,7 @@ base1.pack()
 
 ans1 = list('AABBCCDDEEFFGGHH')
 """Simple capital letters are used to denote the pairs and later
- in the draw function, we have associated a shape and color for each letter. 
+ in the draw function, a shape and color have associated for each letter. 
  So, ans1 is basically a well-shuffled 4×4 matrix of letters."""
 random.shuffle(ans1)
 ans1 = [ans1[:4],
@@ -106,8 +106,8 @@ ans1 = [ans1[:4],
 
 base1.bind("<Button-1>", call)
 moves1 = 0
-
 prev1 = [100, 100]
 board1 = [list('.' * 4) for count in range(4)]
 quizboard()
+add_background_music()
 mainloop()
