@@ -115,45 +115,35 @@ def background_music():
 
 
 def drawDiamondSprite(color, left, top, width, height):
-    diamondImage = None;
-    if (DIAMOND_ASSETPATH[color]):
-        diamondImage = DIAMOND_ASSETPATH[color];
+    diamondImage = DIAMOND_ASSETPATH[color] or None
     diamondImage = pygame.transform.scale(pygame.image.load(diamondImage).convert_alpha(), (width, height))
     diamond = Gem((left, top), diamondImage)
     diamond.draw(DISPLAYSURF)
 
 
 def drawHexagonSprite(color, left, top, width, height):
-    hexagonImage = None;
-    if (HEXAGON_ASSETPATH[color]):
-        hexagonImage = HEXAGON_ASSETPATH[color];
+    hexagonImage = HEXAGON_ASSETPATH[color] or None
     hexagonImage = pygame.transform.scale(pygame.image.load(hexagonImage).convert_alpha(), (width, height))
     hexagon = Gem((left, top), hexagonImage)
     hexagon.draw(DISPLAYSURF)
 
 
 def drawOctagonSprite(color, left, top, width, height):
-    octagonImage = None;
-    if (OCTAGON_ASSETPATH[color]):
-        octagonImage = OCTAGON_ASSETPATH[color];
+    octagonImage = OCTAGON_ASSETPATH[color] or None
     octagonImage = pygame.transform.scale(pygame.image.load(octagonImage).convert_alpha(), (width, height))
     octagon = Gem((left, top), octagonImage)
     octagon.draw(DISPLAYSURF)
 
 
 def drawSquareSprite(color, left, top, width, height):
-    squareImage = None;
-    if (SQUARE_ASSETPATH[color]):
-        squareImage = SQUARE_ASSETPATH[color];
+    squareImage = SQUARE_ASSETPATH[color] or None
     squareImage = pygame.transform.scale(pygame.image.load(squareImage).convert_alpha(), (width, height))
     square = Gem((left, top), squareImage)
     square.draw(DISPLAYSURF)
 
 
 def drawTriangleSprite(color, left, top, width, height):
-    triangleImage = None;
-    if (TRIANGLE_ASSETPATH[color]):
-        triangleImage = TRIANGLE_ASSETPATH[color];
+    triangleImage = TRIANGLE_ASSETPATH[color] or None
     triangleImage = pygame.transform.scale(pygame.image.load(triangleImage).convert_alpha(), (width, height))
     triangle = Gem((left, top), triangleImage)
     triangle.draw(DISPLAYSURF)
@@ -166,7 +156,7 @@ class Gem(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=pos)
 
     def draw(self, screen):
-        screen.blit(self.image, self.rect);
+        screen.blit(self.image, self.rect)
 
 
 def text_objects(text, font):
@@ -180,7 +170,7 @@ def button(msg, x, y, w, h, ic, ac, action=None):
     print(click)
     if x + w > mouse[0] > x and y + h > mouse[1] > y:
         pygame.draw.rect(DISPLAYSURF, ac, (x, y, w, h))
-        if click[0] == 1 and action != None:
+        if click[0] == 1 and action is not None:
             action()
     else:
         pygame.draw.rect(DISPLAYSURF, ic, (x, y, w, h))
@@ -208,7 +198,7 @@ def pause():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-        pause_text = font.render("Game Paused", 1, (255, 255, 255))
+        pause_text = font.render("Game Paused", True, (255, 255, 255))
         pause_rect = pause_text.get_rect(center=(WINDOWWIDTH / 2, WINDOWHEIGHT / 2 - 210))
         print(pause_text.get_size())
         pause_surface = pygame.Surface((210, 145))
@@ -218,15 +208,15 @@ def pause():
         button("Resume", WINDOWWIDTH / 2 - 35, WINDOWHEIGHT / 2 - 140, 100, 50, NAVYBLUE, GRAY, unpause)
         button("Quit", WINDOWWIDTH / 2 - 35, WINDOWHEIGHT / 2 - 190, 100, 50, NAVYBLUE, GRAY, quit_game)
         pygame.display.update()
-        FPSCLOCK.tick(FPS)
+        FPS_CLOCK.tick(FPS)
 
 
-def main():
-    global FPSCLOCK, DISPLAYSURF, GAME_SCORE, GAME_LEVEL, GAME_PAUSED
+def main():  # sourcery no-metrics skip: none-compare
+    global FPS_CLOCK, DISPLAYSURF, GAME_SCORE, GAME_LEVEL, GAME_PAUSED
 
     pygame.init()
     background_music()
-    FPSCLOCK = pygame.time.Clock()
+    FPS_CLOCK = pygame.time.Clock()
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
 
     mousex = 0
@@ -240,7 +230,7 @@ def main():
 
     DISPLAYSURF.fill(BGCOLOR)
     startGameAnimation(mainBoard)
-    start_time = pygame.time.get_ticks()
+    # start_time = pygame.time.get_ticks() //Might use later on
 
     while True:
         mouseClicked = False
@@ -249,7 +239,7 @@ def main():
         drawBoard(mainBoard, revealedBoxes)
         font = pygame.font.SysFont(None, 32)
         game_score_string = "Score: " + str(GAME_SCORE) + "     Level: " + str(GAME_LEVEL)
-        game_score_text = font.render(game_score_string, 1, (255, 255, 255))
+        game_score_text = font.render(game_score_string, True, (255, 255, 255))
         game_score_rect = game_score_text.get_rect(center=(120, 10))
 
         for event in pygame.event.get():
@@ -267,13 +257,13 @@ def main():
         DISPLAYSURF.fill((0, 0, 0), (0, 0, 250, 30))
         DISPLAYSURF.blit(game_score_text, game_score_rect)
         boxx, boxy = getBoxAtPixel(mousex, mousey)
-        if boxx != None and boxy != None:
+        if boxx is not None and boxy is not None:
             if not revealedBoxes[boxx][boxy]:
                 drawHighlightBox(boxx, boxy)
             if not revealedBoxes[boxx][boxy] and mouseClicked:
                 revealBoxesAnimation(mainBoard, [(boxx, boxy)])
                 revealedBoxes[boxx][boxy] = True
-                if firstSelection == None:
+                if firstSelection is None:
                     firstSelection = (boxx, boxy)
                 else:
                     icon1shape, icon1color = getShapeAndColor(mainBoard, firstSelection[0], firstSelection[1])
@@ -301,14 +291,11 @@ def main():
 
         pygame.display.update()
 
-        FPSCLOCK.tick(FPS)
+        FPS_CLOCK.tick(FPS)
 
 
 def generateRevealedBoxesData(val):
-    revealedBoxes = []
-    for i in range(BOARDWIDTH):
-        revealedBoxes.append([val] * BOARDHEIGHT)
-    return revealedBoxes
+    return [[val] * BOARDHEIGHT for _ in range(BOARDWIDTH)]
 
 
 def getRandomizedBoard():
@@ -322,27 +309,24 @@ def getRandomizedBoard():
     random.shuffle(icons)
 
     board = []
-    for x in range(BOARDWIDTH):
+    for _ in range(BOARDWIDTH):
         column = []
-        for y in range(BOARDHEIGHT):
+        for _ in range(BOARDHEIGHT):
             column.append(icons[0])
             del icons[0]
         board.append(column)
-    transposeBoard = [*zip(*board)]
+    # transposeBoard = [*zip(*board)] // might need later on
     return board
 
 
 def splitIntoGroupsOf(groupSize, theList):
-    result = []
-    for i in range(0, len(theList), groupSize):
-        result.append(theList[i:i + groupSize])
-    return result
+    return [theList[i:i + groupSize] for i in range(0, len(theList), groupSize)]
 
 
 def leftTopCoordsOfBox(boxx, boxy):
     left = boxx * (BOXSIZE + GAPSIZE) + XMARGIN
     top = boxy * (BOXSIZE + GAPSIZE) + YMARGIN
-    return (left, top)
+    return left, top
 
 
 def getBoxAtPixel(x, y):
@@ -351,12 +335,12 @@ def getBoxAtPixel(x, y):
             left, top = leftTopCoordsOfBox(boxx, boxy)
             boxRect = pygame.Rect(left, top, BOXSIZE, BOXSIZE)
             if boxRect.collidepoint(x, y):
-                return (boxx, boxy)
-    return (None, None)
+                return boxx, boxy
+    return None, None
 
 
 def drawIcon(shape, color, boxx, boxy):
-    quarter = int(BOXSIZE * 0.25)
+    # quarter = int(BOXSIZE * 0.25) // Might need later on
     half = int(BOXSIZE * 0.5)
 
     left, top = leftTopCoordsOfBox(boxx, boxy)
@@ -377,7 +361,7 @@ def getShapeAndColor(board, boxx, boxy):
 
 
 def drawBoxCovers(board, boxes, coverage):
-    pauseDisplay = False
+    # pauseDisplay = False //Might use later on
     for box in boxes:
         left, top = leftTopCoordsOfBox(box[0], box[1])
         pygame.draw.rect(DISPLAYSURF, BGCOLOR, (left, top, BOXSIZE, BOXSIZE))
@@ -386,14 +370,14 @@ def drawBoxCovers(board, boxes, coverage):
         if coverage > 0:
             pygame.draw.rect(DISPLAYSURF, BOXCOLOR, (left, top, coverage, BOXSIZE))
     pygame.display.update()
-    FPSCLOCK.tick(FPS)
+    FPS_CLOCK.tick(FPS)
 
 
 def revealBoxesAnimation(board, boxesToReveal):
     for coverage in range(BOXSIZE, (-REVEALSPEED) - 1, -REVEALSPEED):
-        print(coverage);
-        if (coverage < 0):
-            pygame.time.wait(1000);
+        print(coverage)
+        if coverage < 0:
+            pygame.time.wait(1000)
         drawBoxCovers(board, boxesToReveal, coverage)
 
 
@@ -438,7 +422,7 @@ def gameWonAnimation(board):
     color1 = LIGHTBGCOLOR
     color2 = BGCOLOR
 
-    for i in range(13):
+    for _ in range(13):
         color1, color2 = color2, color1
         DISPLAYSURF.fill(color1)
         drawBoard(board, coveredBoxes)
@@ -450,9 +434,7 @@ def hasWon(revealedBoxes):
     global GAME_SCORE
     GAME_SCORE += 10
     for i in revealedBoxes:
-        if False in i:
-            return False
-        return True
+        return False not in i
 
 
 if __name__ == '__main__':
