@@ -8,6 +8,9 @@ PuzzleWindow.title(' Minnes Spel ')
 tabs = ttk.Notebook(PuzzleWindow)
 easy = ttk.Frame(tabs)
 
+""" ttk.Notebook() manages the collection of windows and displays one window at a time.
+ttk.Frame() is basically a rectangular container for other widgets."""
+
 tabs.add(easy, text='Enkel')
 tabs.pack(expand=10, fill="both")
 
@@ -62,6 +65,7 @@ def quizboard():
 
 def call(event):
     """This function gets executed every time the user clicks a card.
+    It displays the figures hidden in the tile.
     prev1: a list that stores the row and column index of previously clicked cell."""
 
     global base1, ans1, board1, moves1, prev1

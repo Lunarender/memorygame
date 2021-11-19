@@ -2,6 +2,13 @@ import pygame
 import random
 import sys
 
+"""Todo list:
+1. Add a introductory page with a relevant picture, Title, and Play button.
+2. Remove all warnings.
+3. Add comments to every function for explanations.
+4. Make other relevant modifications.
+"""
+
 DIAMOND_ASSETPATH = {
     "red": "./assets/red_diamond.png",
     "green": "./assets/green_diamond.png",
