@@ -228,7 +228,7 @@ def main():  # sourcery no-metrics skip: none-compare
 
     global FPS_CLOCK, DISPLAYSURF, GAME_SCORE, GAME_LEVEL, GAME_PAUSED
     pygame.init()         # to initialize pygame
-    background_music()
+    background_music()    # to run background music
     FPS_CLOCK = pygame.time.Clock()   # in order to set general time for the game
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))    # to set the main window
 
