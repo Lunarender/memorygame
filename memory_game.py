@@ -1,7 +1,80 @@
 from tkinter import *
 import random
 from tkinter import ttk
+
+import black as black
 import pygame
+import white as white
+
+ont = pygame.font.SysFont("Arial", 25)
+smallfont = pygame.font.SysFont("Arial", 25)
+mediumfont = pygame.font.SysFont("Arial", 50)
+largefont = pygame.font.SysFont("Arial", 75)
+
+screen_height = 600
+screen_width = 800
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption("Game")
+
+def text_object(text, color, size):
+    if size == "small":
+        textSurface = smallfont.render(text, True, color)
+    if size == "medium":
+        textSurface = mediumfont.render(text, True, color)
+    if size == "large":
+        textSurface = largefont.render(text, True, color)
+
+    return textSurface, textSurface.get_rect()
+def message(msg, color, y_displacement=0, size="small"):
+    textSurf, textRect = text_object(msg, color, size)
+    textRect.center = (screen_width / 2), (screen_height / 2) + y_displacement
+    screen.blit(textSurf, textRect)
+
+def game_intro():
+    intro = True
+
+    while intro:
+        screen.fill(white)
+        message("WELCOME",
+                purple,
+                -100,
+                size="large")
+
+        message("This is a memory game!"
+                , black,
+                50,
+                size="small")
+        fps.tick(10)
+
+        pygame.display.update
+
+
+while not gameloop:
+    while gameover == True:
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            gameloop = True
+
+        screen.fill(white)
+
+
+        message("Press C to continue or Q to quit",
+                black,
+                50, size="medium")
+
+        pygame.display.update()
+        for event in pygame.event.get():
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_c:
+                    LOOP()
+                if event.key == pygame.K_q:
+                    gameloop = True
+                    pygame.quit()
+
+white = [255,255,255]
+black = [0,0,0]
+purple = [255,0,255]
 
 PuzzleWindow = Tk()
 PuzzleWindow.title(' Minnes Spel ')
@@ -110,3 +183,4 @@ board1 = [list('.' * 4) for count in range(4)]
 quizboard()
 add_background_music()
 mainloop()
+ 
