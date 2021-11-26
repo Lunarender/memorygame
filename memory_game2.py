@@ -48,11 +48,11 @@ TRIANGLE_ASSETPATH = {
     "teal": "./assets/teal_triangle.png"
 }
 """Coding global variables"""
-global FPS_CLOCK, DISPLAYSURF
-FPS = 40  # frames per second, the general speed of the program
+global FPS_CLOCK
+FPS = 100  # frames per second, the general speed of the program
 WINDOWWIDTH = 640  # size of window's width in pixels
 WINDOWHEIGHT = 580  # size of windows' height in pixels
-REVEALSPEED = 5  # speed boxes' sliding reveals and covers
+REVEALSPEED = 10  # speed boxes' sliding reveals and covers
 BOXSIZE = 40  # size of box height & width in pixels
 GAPSIZE = 10  # size of gap between boxes in pixels
 BOARDWIDTH = 4  # number of columns of icons
@@ -94,6 +94,12 @@ SPRITE_TEAL = "teal"
 ALLCOLORS = (SPRITE_RED, SPRITE_GREEN, SPRITE_BLUE, SPRITE_YELLOW, SPRITE_TAN, SPRITE_GREY, SPRITE_TEAL)
 ALLSHAPES = (DIAMOND, HEXAGON, OCTAGON, SQUARE, TRIANGLE)
 
+"""Drawing background image"""
+pygame.init()
+DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
+bg = pygame.image.load('bg_image.png')
+bg = pygame.transform.scale(bg, (WINDOWWIDTH, WINDOWHEIGHT)).convert_alpha()
+
 
 def level_up():
     """This function add one row and one column everytime user reach next level in order to increase difficulty"""
@@ -107,7 +113,7 @@ def background_music():
     pygame.mixer.init()
     pygame.mixer.music.load('background_music.mp3')
     pygame.mixer.music.play(loops=-1)
-    pygame.mixer.music.set_volume(0.15)
+    pygame.mixer.music.set_volume(0.05)
 
 
 def draw_diamond_sprite(color, left, top, width, height):
@@ -223,88 +229,23 @@ def pause():
         FPS_CLOCK.tick(FPS)
 
 
-def main():  # sourcery no-metrics skip: none-compare
-    """All main functions are called to run the game"""
-
-    global FPS_CLOCK, DISPLAYSURF, GAME_SCORE, GAME_LEVEL, GAME_PAUSED
-    pygame.init()         # to initialize pygame
-    background_music()    # to run background music
-    FPS_CLOCK = pygame.time.Clock()   # in order to set general time for the game
-    DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))    # to set the main window
-
-    mousex = 0
-    mousey = 0
-    pygame.display.set_caption('Memory Game')
-
-    main_board = get_randomized_board()   # it randomize all the objects in the board
-    revealed_boxes = generate_revealed_boxes_data(False)
-
-    first_selection = None
-
-    DISPLAYSURF.fill(BGCOLOR)
-    start_game_animation(main_board)
-    pygame.time.get_ticks()
-
-    while True:
-        mouse_clicked = False
-
-        DISPLAYSURF.fill(BGCOLOR)
-        draw_board(main_board, revealed_boxes)
-        font = pygame.font.SysFont("", 32)
-        game_score_string = "Score: " + str(GAME_SCORE) + "     Level: " + str(GAME_LEVEL)
-        game_score_text = font.render(game_score_string, True, (255, 255, 255))
-        game_score_rect = game_score_text.get_rect(center=(120, 10))
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE:  # to display pause menu
-                GAME_PAUSED = True
-            elif event.type == pygame.MOUSEMOTION:
-                mousex, mousey = event.pos
-            elif event.type == pygame.MOUSEBUTTONUP:
-                mousex, mousey = event.pos
-                mouse_clicked = True
-            pause()
-        DISPLAYSURF.fill((0, 0, 0), (0, 0, 250, 30))
-        DISPLAYSURF.blit(game_score_text, game_score_rect)
-        boxx, boxy = get_box_at_pixel(mousex, mousey)
-        if boxx is not None and boxy is not None:
-            if not revealed_boxes[boxx][boxy]:
-                draw_highlight_box(boxx, boxy)
-            if not revealed_boxes[boxx][boxy] and mouse_clicked:
-                reveal_boxes_animation(main_board, [(boxx, boxy)])
-                revealed_boxes[boxx][boxy] = True
-                if first_selection is None:
-                    first_selection = (boxx, boxy)
-                else:
-                    icon1shape, icon1color = get_shape_and_color(main_board, first_selection[0], first_selection[1])
-                    icon2shape, icon2color = get_shape_and_color(main_board, boxx, boxy)
-                    if icon1shape != icon2shape or icon1color != icon2color:
-                        pygame.time.wait(1000)
-                        cover_boxes_animation(main_board, [(first_selection[0], first_selection[1]), (boxx, boxy)])
-                        revealed_boxes[first_selection[0]][first_selection[1]] = False
-                        revealed_boxes[boxx][boxy] = False
-                    elif has_won(revealed_boxes):
-                        game_won_animation(main_board)
-                        pygame.time.wait(2000)
-                        level_up()
-                        GAME_LEVEL += 1
-                        main_board = get_randomized_board()
-                        revealed_boxes = generate_revealed_boxes_data(False)
-
-                        draw_board(main_board, revealed_boxes)
-
-                        pygame.display.update()
-                        pygame.time.wait(1000)
-                        start_game_animation(main_board)
-
-                    first_selection = None
-
-        pygame.display.update()
-
-        FPS_CLOCK.tick(FPS)
+def game_events(mouse_clicked, mousex, mousey):
+    """This function is called to get all the events.
+    If quit event occurs the game quit and if escape key is pressed the game pause menu will appear"""
+    global GAME_PAUSED
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE:  # to display pause menu
+            GAME_PAUSED = True
+        elif event.type == pygame.MOUSEMOTION:
+            mousex, mousey = event.pos
+        elif event.type == pygame.MOUSEBUTTONUP:
+            mousex, mousey = event.pos
+            mouse_clicked = True
+        pause()
+    return mouse_clicked, mousex, mousey
 
 
 def generate_revealed_boxes_data(val):
@@ -363,6 +304,83 @@ def get_box_at_pixel(x, y):
     return None, None
 
 
+def main():  # sourcery no-metrics skip: none-compare
+    """All main functions are called to run the game"""
+    global FPS_CLOCK, DISPLAYSURF, GAME_SCORE, GAME_LEVEL, GAME_PAUSED
+    pygame.init()         # to initialize pygame
+    background_music()    # to run background music
+    FPS_CLOCK = pygame.time.Clock()   # in order to set general time for the game
+    DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))    # to set the main window
+
+    mousex = 0
+    mousey = 0
+    pygame.display.set_caption('Minnes Spel ')
+
+    main_board = get_randomized_board()   # it randomize all the objects in the board
+    revealed_boxes = generate_revealed_boxes_data(False)
+
+    first_selection = None
+
+    DISPLAYSURF.fill(BGCOLOR)
+    DISPLAYSURF.blit(bg, (0, 0))
+    start_game_animation(main_board)
+    pygame.time.get_ticks()
+    pygame.time.wait(1000)
+
+    while True:
+        mouse_clicked = False
+
+        DISPLAYSURF.fill(BGCOLOR)
+#       DISPLAYSURF.blit(bg, (0, 0))
+        draw_board(main_board, revealed_boxes)
+        font = pygame.font.SysFont("", 32)
+
+        game_score_string = "Score: " + str(GAME_SCORE) + "     Level: " + str(GAME_LEVEL)
+        game_score_text = font.render(game_score_string, True, (255, 255, 255))
+        game_score_rect = game_score_text.get_rect(center=(120, 10))
+
+        mouse_clicked, mousex, mousey = game_events(mouse_clicked, mousex, mousey)
+        DISPLAYSURF.fill((0, 0, 0), (0, 0, 250, 30))
+        DISPLAYSURF.blit(game_score_text, game_score_rect)
+
+        boxx, boxy = get_box_at_pixel(mousex, mousey)
+        if boxx is not None and boxy is not None:
+            if not revealed_boxes[boxx][boxy]:
+                draw_highlight_box(boxx, boxy)
+            if not revealed_boxes[boxx][boxy] and mouse_clicked:
+                reveal_boxes_animation(main_board, [(boxx, boxy)])
+                revealed_boxes[boxx][boxy] = [True]
+                if first_selection is None:
+                    first_selection = (boxx, boxy)
+                else:
+                    icon1shape, icon1color = get_shape_and_color(main_board, first_selection[0], first_selection[1])
+                    icon2shape, icon2color = get_shape_and_color(main_board, boxx, boxy)
+                    if icon1shape != icon2shape or icon1color != icon2color:
+                        pygame.time.wait(1000)
+                        cover_boxes_animation(main_board, [(first_selection[0], first_selection[1]), (boxx, boxy)])
+                        revealed_boxes[first_selection[0]][first_selection[1]] = False
+                        revealed_boxes[boxx][boxy] = False
+                    elif has_won(revealed_boxes):
+                        game_won_animation(main_board)
+                        pygame.time.wait(2000)
+                        level_up()
+                        GAME_LEVEL += 1
+                        main_board = get_randomized_board()
+                        revealed_boxes = generate_revealed_boxes_data(False)
+
+                        draw_board(main_board, revealed_boxes)
+
+                        pygame.display.update()
+                        pygame.time.wait(1000)
+                        start_game_animation(main_board)
+
+                    first_selection = None
+
+        pygame.display.update()
+
+        FPS_CLOCK.tick(FPS)
+
+
 def draw_icon(shape, color, boxx, boxy):
     """This function is used to draw sprite that will displayed on gameboard.
      It takes four parameters to draw appropriate shapes with appropriate colours."""
@@ -403,25 +421,6 @@ def draw_box_covers(board, boxes, coverage):
     FPS_CLOCK.tick(FPS)
 
 
-def reveal_boxes_animation(board, boxes_to_reveal):
-    """It takes game board and list of boxes as parameter and in order to do reveal boxes animation,
-    it repeatedly call draw_box_cover function.
-    Here the positive coverage value indicates that the box should be fully or partially covered
-    and A negative or zero value indicates  the box should be revealed"""
-    for coverage in range(BOXSIZE, (-REVEALSPEED) - 1, -REVEALSPEED):
-        print(coverage)
-        if coverage < 0:
-            pygame.time.wait(1000)
-        draw_box_covers(board, boxes_to_reveal, coverage)
-
-
-def cover_boxes_animation(board, boxes_to_cover):
-    """It is the inverse of reveal_boxes_animation where coverage
-    starts with a positive number and goes toward a negative number"""
-    for coverage in range(0, BOXSIZE + REVEALSPEED, REVEALSPEED):
-        draw_box_covers(board, boxes_to_cover, coverage)
-
-
 def draw_board(board, revealed):
     """It takes in game board and revealed (a boolean) as parameter, where false means
     the box should be covered and true means the box should be revealed"""
@@ -440,6 +439,25 @@ def draw_highlight_box(boxx, boxy):
      to make the application more responsive for users"""
     left, top = left_top_coords_of_box(boxx, boxy)
     pygame.draw.rect(DISPLAYSURF, HIGHLIGHTCOLOR, (left - 5, top - 5, BOXSIZE + 10, BOXSIZE + 10), 4)
+
+
+def reveal_boxes_animation(board, boxes_to_reveal):
+    """It takes game board and list of boxes as parameter and in order to do reveal boxes animation,
+    it repeatedly call draw_box_cover function.
+    Here the positive coverage value indicates that the box should be fully or partially covered
+    and A negative or zero value indicates  the box should be revealed"""
+    for coverage in range(BOXSIZE, (-REVEALSPEED) - 1, -REVEALSPEED):
+        print(coverage)
+        if coverage < 0:
+            pygame.time.wait(1000)
+        draw_box_covers(board, boxes_to_reveal, coverage)
+
+
+def cover_boxes_animation(board, boxes_to_cover):
+    """It is the inverse of reveal_boxes_animation where coverage
+    starts with a positive number and goes toward a negative number"""
+    for coverage in range(0, BOXSIZE + REVEALSPEED, REVEALSPEED):
+        draw_box_covers(board, boxes_to_cover, coverage)
 
 
 def start_game_animation(board):
