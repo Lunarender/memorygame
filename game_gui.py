@@ -3,10 +3,18 @@ import PySimpleGUI as sg
 
 
 def make_win1():
-    sg.theme('DarkBlue4')
+    sg.theme('DarkBlue12')
     layout = [[sg.Text('Welcome to Memory Game', font='Arial 20 bold')],
               [sg.Text('Click exit to exit the game')],
-              [sg.Button('Play', font='Arial 20 bold'), sg.Button('Game_rules', font='Arial 20 bold'), sg.Button('Exit', font='Arial 20 bold')]]
+              [sg.Text('')],
+              [sg.Text('')],
+              [sg.Text('')],
+              [sg.Text('')],
+              [sg.Text('')],
+              [sg.Button('Play', font='Arial 20 bold')],
+              [sg.Button('Game_rules', font='Arial 20 bold')],
+              [sg.Button('Exit', font='Arial 20 bold')]]
+
     return sg.Window('Memory Game', layout, element_justification='c', size=(1000, 600), finalize=True)
 
 
@@ -21,7 +29,7 @@ while True:             # Event Loop
             break
     elif event == 'Game_rules':
         sg.popup('Match same objects', 'User will get 10 points for each matching', 'After matching all '
-                 'objects of the window, user will reach the next level')
+                 'objects of the window, user will reach the next level', font='Arial 16 bold')
     elif event == 'Play' and not window2:
         window2 = memory_game2.main()
     elif event == '-IN-':
@@ -30,4 +38,3 @@ while True:             # Event Loop
         window['-OUTPUT-'].update('')
         window['-IN-'].update('')
 window.close()
-

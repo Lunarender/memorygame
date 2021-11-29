@@ -48,12 +48,12 @@ TRIANGLE_ASSETPATH = {
     "teal": "./assets/teal_triangle.png"
 }
 """Coding global variables"""
-global FPS_CLOCK
+global FPS_CLOCK, DISPLAYSURF
 FPS = 100  # frames per second, the general speed of the program
 WINDOWWIDTH = 1000  # size of window's width in pixels
-WINDOWHEIGHT = 600  # size of windows' height in pixels
+WINDOWHEIGHT = 700  # size of windows' height in pixels
 REVEALSPEED = 10  # speed boxes' sliding reveals and covers
-BOXSIZE = 40  # size of box height & width in pixels
+BOXSIZE = 50  # size of box height & width in pixels
 GAPSIZE = 10  # size of gap between boxes in pixels
 BOARDWIDTH = 4  # number of columns of icons
 BOARDHEIGHT = 3  # number of rows of icons
