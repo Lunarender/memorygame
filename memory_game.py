@@ -1,80 +1,7 @@
 from tkinter import *
 import random
 from tkinter import ttk
-
-import black as black
 import pygame
-import white as white
-
-ont = pygame.font.SysFont("Arial", 25)
-smallfont = pygame.font.SysFont("Arial", 25)
-mediumfont = pygame.font.SysFont("Arial", 50)
-largefont = pygame.font.SysFont("Arial", 75)
-
-screen_height = 600
-screen_width = 800
-screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("Game")
-
-def text_object(text, color, size):
-    if size == "small":
-        textSurface = smallfont.render(text, True, color)
-    if size == "medium":
-        textSurface = mediumfont.render(text, True, color)
-    if size == "large":
-        textSurface = largefont.render(text, True, color)
-
-    return textSurface, textSurface.get_rect()
-def message(msg, color, y_displacement=0, size="small"):
-    textSurf, textRect = text_object(msg, color, size)
-    textRect.center = (screen_width / 2), (screen_height / 2) + y_displacement
-    screen.blit(textSurf, textRect)
-
-def game_intro():
-    intro = True
-
-    while intro:
-        screen.fill(white)
-        message("WELCOME",
-                purple,
-                -100,
-                size="large")
-
-        message("This is a memory game!"
-                , black,
-                50,
-                size="small")
-        fps.tick(10)
-
-        pygame.display.update
-
-
-while not gameloop:
-    while gameover == True:
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            gameloop = True
-
-        screen.fill(white)
-
-
-        message("Press C to continue or Q to quit",
-                black,
-                50, size="medium")
-
-        pygame.display.update()
-        for event in pygame.event.get():
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_c:
-                    LOOP()
-                if event.key == pygame.K_q:
-                    gameloop = True
-                    pygame.quit()
-
-white = [255,255,255]
-black = [0,0,0]
-purple = [255,0,255]
 
 PuzzleWindow = Tk()
 PuzzleWindow.title(' Minnes Spel ')
@@ -84,7 +11,6 @@ easy = ttk.Frame(tabs)
 """ ttk.Notebook() manages the collection of windows and displays one window at a time.
 ttk.Frame() is basically a rectangular container for other widgets."""
 
-tabs.add(easy, text='Enkel')
 tabs.pack(expand=10, fill="both")
 
 
@@ -93,6 +19,7 @@ def add_background_music():
     pygame.mixer.init()
     pygame.mixer.music.load('background_music.mp3')
     pygame.mixer.music.play(loops=-1)
+    pygame.mixer.music.set_volume(0.05)
 
 
 """Level 1"""
@@ -128,7 +55,7 @@ def quizboard():
     count = 0
     for i in range(4):
         for j in range(4):
-            base1.create_rectangle(100 * i, j * 100, 100 * i + 100, 100 * j + 100, fill="cyan")
+            base1.create_rectangle(100 * i, j * 100, 100 * i + 100, 100 * j + 100, fill="royalBlue")
             if board1[i][j] != '.':
                 draw(board1[i][j], i, j)
                 count += 1
@@ -185,6 +112,271 @@ moves1 = 0
 prev1 = [100, 100]
 board1 = [list('.' * 4) for count in range(4)]
 quizboard()
+
+"""Level 2"""
+window2 = ttk.Frame(tabs)
+
+
+def draw1(a, x, y):
+    global base2
+    if a == 'A':
+        base2.create_rectangle(100 * x + 20, y * 100 + 20, 100 * x + 100 - 20, 100 * y + 100 - 20, fill='red')
+    elif a == 'B':
+        base2.create_rectangle(100 * x + 20, y * 100 + 20, 100 * x + 100 - 20, 100 * y + 100 - 20, fill='yellow')
+    elif a == 'C':
+        base2.create_rectangle(100 * x + 20, y * 100 + 20, 100 * x + 100 - 20, 100 * y + 100 - 20, fill='blue')
+    elif a == 'D':
+        base2.create_oval(100 * x + 20, y * 100 + 20, 100 * x + 100 - 20, 100 * y + 100 - 20, fill='red')
+    elif a == 'E':
+        base2.create_oval(100 * x + 20, y * 100 + 20, 100 * x + 100 - 20, 100 * y + 100 - 20, fill='yellow')
+    elif a == 'F':
+        base2.create_oval(100 * x + 20, y * 100 + 20, 100 * x + 100 - 20, 100 * y + 100 - 20, fill='blue')
+    elif a == 'G':
+        base2.create_polygon(100 * x + 50, y * 100 + 20, 100 * x + 20, 100 * y + 100 - 20, 100 * x + 100 - 20,
+                             100 * y + 100 - 20, fill='red')
+    elif a == 'H':
+        base2.create_polygon(100 * x + 50, y * 100 + 20, 100 * x + 20, 100 * y + 100 - 20, 100 * x + 100 - 20,
+                             100 * y + 100 - 20, fill='green')
+    elif a == 'I':
+        base2.create_polygon(100 * x + 50, y * 100 + 20, 100 * x + 20, 100 * y + 100 - 20, 100 * x + 100 - 20,
+                             100 * y + 100 - 20, fill='yellow')
+    elif a == 'J':
+        base2.create_polygon(100 * x + 50, y * 100 + 20, 100 * x + 20, 100 * y + 100 - 20, 100 * x + 100 - 20,
+                             100 * y + 100 - 20, fill='blue')
+    elif a == 'K':
+        base2.create_polygon(100 * x + 50, y * 100 + 20, 100 * x + 20, 100 * y + 100 - 20, 100 * x + 100 - 20,
+                             100 * y + 100 - 20, fill='black')
+    elif a == 'L':
+        base2.create_polygon(100 * x + 50, y * 100 + 20, 100 * x + 20, 100 * y + 100 - 20, 100 * x + 100 - 20,
+                             100 * y + 100 - 20, fill='orange')
+    elif a == 'M':
+        base2.create_rectangle(100 * x + 20, y * 100 + 20, 100 * x + 100 - 20, 100 * y + 100 - 20, fill='black')
+    elif a == 'N':
+        base2.create_rectangle(100 * x + 20, y * 100 + 20, 100 * x + 100 - 20, 100 * y + 100 - 20, fill='orange')
+    elif a == 'O':
+        base2.create_rectangle(100 * x + 20, y * 100 + 20, 100 * x + 100 - 20, 100 * y + 100 - 20, fill='green')
+    elif a == 'P':
+        base2.create_oval(100 * x + 20, y * 100 + 20, 100 * x + 100 - 20, 100 * y + 100 - 20, fill='black')
+    elif a == 'Q':
+        base2.create_oval(100 * x + 20, y * 100 + 20, 100 * x + 100 - 20, 100 * y + 100 - 20, fill='orange')
+    elif a == 'R':
+        base2.create_oval(100 * x + 20, y * 100 + 20, 100 * x + 100 - 20, 100 * y + 100 - 20, fill='green')
+
+
+def puzzleboard2():
+    global base2, ans2, board2, moves2
+    count = 0
+    for i in range(6):
+        for j in range(6):
+            base2.create_rectangle(100 * i, j * 100, 100 * i + 100, 100 * j + 100, fill="royalBlue")
+            if board2[i][j] != '.':
+                draw1(board2[i][j], i, j)
+                count += 1
+    if count >= 36:
+        base2.create_text(300, 650, text="No. of moves: " + str(moves2), font=('arial', 20))
+
+
+def call2(event):
+    global base2, ans2, board2, moves2, prev2
+    i = event.x // 100
+    j = event.y // 100
+    if board2[i][j] != '.':
+        return
+    moves2 += 1
+    if prev2[0] > 6:
+        prev2[0] = i
+        prev2[1] = j
+        board2[i][j] = ans2[i][j]
+        puzzleboard2()
+    else:
+        board2[i][j] = ans2[i][j]
+        puzzleboard2()
+        if ans2[i][j] == board2[prev2[0]][prev2[1]]:
+            prev2 = [100, 100]
+            puzzleboard2()
+            return
+        else:
+            board2[prev2[0]][prev2[1]] = '.'
+            puzzleboard2()
+            prev2 = [i, j]
+            return
+
+
+base2 = Canvas(window2, width=700, height=700)
+base2.pack()
+ans2 = list('AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRR')
+random.shuffle(ans2)
+ans2 = [ans2[:6],
+        ans2[6:12],
+        ans2[12:18],
+        ans2[18:24],
+        ans2[24:30],
+        ans2[30:]
+        ]
+base2.bind("<Button-1>", call2)
+
+moves2 = 0
+prev2 = [100, 100]
+board2 = [list('.' * 6) for _ in range(6)]
+puzzleboard2()
+
+"""Level 3"""
+
+window3 = ttk.Frame(tabs)
+tabs.add(easy, text='Enkel')
+tabs.add(window2, text='Medium')
+tabs.add(window3, text='Hård')
+tabs.pack(expand=10, fill="both")
+
+
+def draw2(a, x, y):
+    global base3
+    if a == 'A':
+        base3.create_rectangle(80 * x + 20, y * 80 + 20, 80 * x + 80 - 20, 80 * y + 80 - 20, fill='red')
+    elif a == 'B':
+        base3.create_rectangle(80 * x + 20, y * 80 + 20, 80 * x + 80 - 20, 80 * y + 80 - 20, fill='yellow')
+    elif a == 'C':
+        base3.create_rectangle(80 * x + 20, y * 80 + 20, 80 * x + 80 - 20, 80 * y + 80 - 20, fill='blue')
+    elif a == 'D':
+        base3.create_oval(80 * x + 20, y * 80 + 20, 80 * x + 80 - 20, 80 * y + 80 - 20, fill='red')
+    elif a == 'E':
+        base3.create_oval(80 * x + 20, y * 80 + 20, 80 * x + 80 - 20, 80 * y + 80 - 20, fill='yellow')
+    elif a == 'F':
+        base3.create_oval(80 * x + 20, y * 80 + 20, 80 * x + 80 - 20, 80 * y + 80 - 20, fill='blue')
+    elif a == 'G':
+        base3.create_polygon(80 * x + 50, y * 80 + 20, 80 * x + 20, 80 * y + 80 - 20, 80 * x + 80 - 20,
+                             80 * y + 80 - 20, fill='red')
+    elif a == 'H':
+        base3.create_polygon(80 * x + 50, y * 80 + 20, 80 * x + 20, 80 * y + 80 - 20, 80 * x + 80 - 20,
+                             80 * y + 80 - 20, fill='green')
+    elif a == 'I':
+        base3.create_polygon(80 * x + 50, y * 80 + 20, 80 * x + 20, 80 * y + 80 - 20, 80 * x + 80 - 20,
+                             80 * y + 80 - 20, fill='yellow')
+    elif a == 'J':
+        base3.create_polygon(80 * x + 50, y * 80 + 20, 80 * x + 20, 80 * y + 80 - 20, 80 * x + 80 - 20,
+                             80 * y + 80 - 20, fill='blue')
+    elif a == 'K':
+        base3.create_polygon(80 * x + 50, y * 80 + 20, 80 * x + 20, 80 * y + 80 - 20, 80 * x + 80 - 20,
+                             80 * y + 80 - 20, fill='black')
+    elif a == 'L':
+        base3.create_polygon(80 * x + 50, y * 80 + 20, 80 * x + 20, 80 * y + 80 - 20, 80 * x + 80 - 20,
+                             80 * y + 80 - 20, fill='orange')
+    elif a == 'M':
+        base3.create_rectangle(80 * x + 20, y * 80 + 20, 80 * x + 80 - 20, 80 * y + 80 - 20, fill='black')
+    elif a == 'N':
+        base3.create_rectangle(80 * x + 20, y * 80 + 20, 80 * x + 80 - 20, 80 * y + 80 - 20, fill='orange')
+    elif a == 'O':
+        base3.create_rectangle(80 * x + 20, y * 80 + 20, 80 * x + 80 - 20, 80 * y + 80 - 20, fill='green')
+    elif a == 'P':
+        base3.create_oval(80 * x + 20, y * 80 + 20, 80 * x + 80 - 20, 80 * y + 80 - 20, fill='pink')
+    elif a == 'Q':
+        base3.create_oval(80 * x + 20, y * 80 + 20, 80 * x + 80 - 20, 80 * y + 80 - 20, fill='green')
+    elif a == 'R':
+        base3.create_rectangle(80 * x + 20, y * 80 + 20, 80 * x + 80 - 20, 80 * y + 80 - 20, fill='pink')
+    elif a == 'S':
+        base3.create_rectangle(80 * x + 20, y * 80 + 20, 80 * x + 80 - 20, 80 * y + 80 - 20, fill='purple')
+    elif a == 'T':
+        base3.create_oval(80 * x + 20, y * 80 + 20, 80 * x + 80 - 20, 80 * y + 80 - 20, fill='purple')
+    elif a == 'U':
+        base3.create_polygon(80 * x + 50, y * 80 + 20, 80 * x + 20, 80 * y + 80 - 20, 80 * x + 80 - 20,
+                             80 * y + 80 - 20, fill='purple')
+    elif a == 'V':
+        base3.create_polygon(80 * x + 50, y * 80 + 20, 80 * x + 20, 80 * y + 80 - 20, 80 * x + 80 - 20,
+                             80 * y + 80 - 20, fill='pink')
+    elif a == 'W':
+        base3.create_polygon(80 * x + 50, y * 80 + 20, 80 * x + 20, 80 * y + 80 - 20, 80 * x + 80 - 20,
+                             80 * y + 80 - 20, fill='maroon')
+    elif a == 'X':
+        base3.create_rectangle(80 * x + 20, y * 80 + 20, 80 * x + 80 - 20, 80 * y + 80 - 20, fill='maroon')
+    elif a == 'Y':
+        base3.create_oval(80 * x + 20, y * 80 + 20, 80 * x + 80 - 20, 80 * y + 80 - 20, fill='maroon')
+    elif a == 'Z':
+        base3.create_polygon(80 * x + 50, y * 80 + 20, 80 * x + 20, 80 * y + 80 - 20, 80 * x + 80 - 20,
+                             80 * y + 80 - 20, fill='brown')
+    elif a == 'a':
+        base3.create_oval(80 * x + 20, y * 80 + 20, 80 * x + 80 - 20, 80 * y + 80 - 20, fill='brown')
+    elif a == 'b':
+        base3.create_rectangle(80 * x + 20, y * 80 + 20, 80 * x + 80 - 20, 80 * y + 80 - 20, fill='brown')
+    elif a == 'c':
+        base3.create_polygon(80 * x + 50, y * 80 + 20, 80 * x + 20, 80 * y + 80 - 20, 80 * x + 80 - 20,
+                             80 * y + 80 - 20, fill='aqua')
+    elif a == 'd':
+        base3.create_rectangle(80 * x + 20, y * 80 + 20, 80 * x + 80 - 20, 80 * y + 80 - 20, fill='aqua')
+    elif a == 'e':
+        base3.create_oval(80 * x + 20, y * 80 + 20, 80 * x + 80 - 20, 80 * y + 80 - 20, fill='aqua')
+    elif a == 'f':
+        base3.create_polygon(80 * x + 50, y * 80 + 20, 80 * x + 20, 80 * y + 80 - 20, 80 * x + 80 - 20,
+                             80 * y + 80 - 20, fill='magenta')
+    elif a == 'g':
+        base3.create_oval(80 * x + 20, y * 80 + 20, 80 * x + 80 - 20, 80 * y + 80 - 20, fill='magenta')
+
+
+def quizboard3():
+    global base3, ans3, board3, moves3
+    count = 0
+    for i in range(8):
+        for j in range(8):
+            base3.create_rectangle(80 * i, j * 80, 80 * i + 80, 80 * j + 80, fill="royalBlue")
+            if board3[i][j] != '.':
+                draw2(board3[i][j], i, j)
+                count += 1
+    if count >= 64:
+        base3.create_text(300, 650, text="No. of moves: " + str(moves3), font=('arial', 20))
+
+
+def call3(event):
+    global base3, ans3, board3, moves3, prev3
+    i = event.x // 80
+    j = event.y // 80
+    if board3[i][j] != '.':
+        return
+    moves3 += 1
+    if prev3[0] > 8:
+        prev3[0] = i
+        prev3[1] = j
+        board3[i][j] = ans3[i][j]
+        quizboard3()
+    else:
+        board3[i][j] = ans3[i][j]
+        quizboard3()
+        if ans3[i][j] == board3[prev3[0]][prev3[1]]:
+            print("matched")
+            prev3 = [100, 100]
+            quizboard3()
+            return
+        else:
+            board3[prev3[0]][prev3[1]] = '.'
+            quizboard3()
+            prev3 = [i, j]
+            return
+
+
+base3 = Canvas(window3, width=700, height=700)
+base3.pack()
+
+ans3 = list('AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUWWXXYYZZaabbccddeeffgg')
+random.shuffle(ans3)
+ans3 = [ans3[:8],
+        ans3[8:16],
+        ans3[16:24],
+        ans3[24:32],
+        ans3[32:40],
+        ans3[40:48],
+        ans3[48:56],
+        ans3[56:]
+        ]
+
+base3.bind("<Button-1>", call3)
+
+moves3 = 0
+
+prev3 = [80, 80]
+
+board3 = [list('.' * 8) for _ in range(8)]
+quizboard3()
 add_background_music()
-mainloop()
+
+
+if __name__ == '__main__':
+    mainloop()
  

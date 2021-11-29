@@ -1,26 +1,45 @@
+from tkinter import *
 import random
-import tkinter
+from tkinter import ttk
+from PIL import ImageTk, Image
+PuzzleWindow = Tk()
 
-def draw(a, l, m):
+
+# img = ImageTk.PhotoImage(Image.open("bild.gif"))
+# panel = Label(PuzzleWindow, image=img)
+# panel.place(side="bottom", fill="both", expand="yes")
+# PuzzleWindow.mainloop()
+
+PuzzleWindow.title('Memory Puzzle')
+tabs = ttk.Notebook(PuzzleWindow)
+easy = ttk.Frame(tabs)
+tabs.add(easy, text='Easy')
+tabs.pack(expand=1, fill="both")
+
+"""Level 1"""
+
+
+def draw(a, x, y):
+    """ x = row index, y = column index"""
     global base1
     if a == 'A':
-        d = base1.create_rectangle(100 * l + 20, m * 100 + 20, 100 * l + 100 - 20, 100 * m + 100 - 20, fill='red')
+        base1.create_rectangle(100 * x + 20, y * 100 + 20, 100 * x + 100 - 20, 100 * y + 100 - 20, fill='red')
     elif a == 'B':
-        d = base1.create_rectangle(100 * l + 20, m * 100 + 20, 100 * l + 100 - 20, 100 * m + 100 - 20, fill='yellow')
+        base1.create_rectangle(100 * x + 20, y * 100 + 20, 100 * x + 100 - 20, 100 * y + 100 - 20, fill='yellow')
     elif a == 'C':
-        d = base1.create_rectangle(100 * l + 20, m * 100 + 20, 100 * l + 100 - 20, 100 * m + 100 - 20, fill='blue')
+        base1.create_rectangle(100 * x + 20, y * 100 + 20, 100 * x + 100 - 20, 100 * y + 100 - 20, fill='blue')
     elif a == 'D':
-        d = base1.create_oval(100 * l + 20, m * 100 + 20, 100 * l + 100 - 20, 100 * m + 100 - 20, fill='red')
+        base1.create_oval(100 * x + 20, y * 100 + 20, 100 * x + 100 - 20, 100 * y + 100 - 20, fill='red')
     elif a == 'E':
-        d = base1.create_oval(100 * l + 20, m * 100 + 20, 100 * l + 100 - 20, 100 * m + 100 - 20, fill='yellow')
+        base1.create_oval(100 * x + 20, y * 100 + 20, 100 * x + 100 - 20, 100 * y + 100 - 20, fill='yellow')
     elif a == 'F':
-        d = base1.create_oval(100 * l + 20, m * 100 + 20, 100 * l + 100 - 20, 100 * m + 100 - 20, fill='blue')
+        base1.create_oval(100 * x + 20, y * 100 + 20, 100 * x + 100 - 20, 100 * y + 100 - 20, fill='blue')
     elif a == 'G':
-        d = base1.create_polygon(100 * l + 50, m * 100 + 20, 100 * l + 20, 100 * m + 100 - 20, 100 * l + 100 - 20,
-                                 100 * m + 100 - 20, fill='red')
+        base1.create_polygon(100 * x + 50, y * 100 + 20, 100 * x + 20, 100 * y + 100 - 20, 100 * x + 100 - 20,
+                             100 * y + 100 - 20, fill='red')
     elif a == 'H':
-        d = base1.create_polygon(100 * l + 50, m * 100 + 20, 100 * l + 20, 100 * m + 100 - 20, 100 * l + 100 - 20,
-                                 100 * m + 100 - 20, fill='green')
+        base1.create_polygon(100 * x + 50, y * 100 + 20, 100 * x + 20, 100 * y + 100 - 20, 100 * x + 100 - 20,
+                             100 * y + 100 - 20, fill='green')
 
 
 def quizboard():
@@ -28,12 +47,12 @@ def quizboard():
     count = 0
     for i in range(4):
         for j in range(4):
-            rec = base1.create_rectangle(100 * i, j * 100, 100 * i + 100, 100 * j + 100, fill="white")
-            if (board1[i][j] != '.'):
+            base1.create_rectangle(100 * i, j * 100, 100 * i + 100, 100 * j + 100, fill="white")
+            if board1[i][j] != '.':
                 draw(board1[i][j], i, j)
                 count += 1
     if count == 16:
-        base1.create_text(200, 450, text="No. of moves: " + str(moves1), font=('arial', 20))
+        base1.create_text(200, 450, text="No. of moves: " + str(moves1), font=('arial', 30))
 
 
 def call(event):
@@ -44,7 +63,7 @@ def call(event):
         return
     moves1 += 1
     # print(moves)
-    if (prev1[0] > 4):
+    if prev1[0] > 4:
         prev1[0] = i
         prev1[1] = j
         board1[i][j] = ans1[i][j]
@@ -52,7 +71,7 @@ def call(event):
     else:
         board1[i][j] = ans1[i][j]
         quizboard()
-        if (ans1[i][j] == board1[prev1[0]][prev1[1]]):
+        if ans1[i][j] == board1[prev1[0]][prev1[1]]:
             print("matched")
             prev1 = [100, 100]
             quizboard()
@@ -76,10 +95,10 @@ ans1 = [ans1[:4],
 
 base1.bind("<Button-1>", call)
 
-moves1 = IntVar()
 moves1 = 0
 
 prev1 = [100, 100]
 
 board1 = [list('.' * 4) for count in range(4)]
 quizboard()
+mainloop()
