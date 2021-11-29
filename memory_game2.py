@@ -50,8 +50,8 @@ TRIANGLE_ASSETPATH = {
 """Coding global variables"""
 global FPS_CLOCK
 FPS = 100  # frames per second, the general speed of the program
-WINDOWWIDTH = 640  # size of window's width in pixels
-WINDOWHEIGHT = 580  # size of windows' height in pixels
+WINDOWWIDTH = 1000  # size of window's width in pixels
+WINDOWHEIGHT = 600  # size of windows' height in pixels
 REVEALSPEED = 10  # speed boxes' sliding reveals and covers
 BOXSIZE = 40  # size of box height & width in pixels
 GAPSIZE = 10  # size of gap between boxes in pixels
@@ -93,12 +93,6 @@ SPRITE_TEAL = "teal"
 
 ALLCOLORS = (SPRITE_RED, SPRITE_GREEN, SPRITE_BLUE, SPRITE_YELLOW, SPRITE_TAN, SPRITE_GREY, SPRITE_TEAL)
 ALLSHAPES = (DIAMOND, HEXAGON, OCTAGON, SQUARE, TRIANGLE)
-
-"""Drawing background image"""
-pygame.init()
-DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
-bg = pygame.image.load('bg_image.png')
-bg = pygame.transform.scale(bg, (WINDOWWIDTH, WINDOWHEIGHT)).convert_alpha()
 
 
 def level_up():
@@ -322,7 +316,6 @@ def main():  # sourcery no-metrics skip: none-compare
     first_selection = None
 
     DISPLAYSURF.fill(BGCOLOR)
-    DISPLAYSURF.blit(bg, (0, 0))
     start_game_animation(main_board)
     pygame.time.get_ticks()
     pygame.time.wait(1000)
@@ -331,7 +324,6 @@ def main():  # sourcery no-metrics skip: none-compare
         mouse_clicked = False
 
         DISPLAYSURF.fill(BGCOLOR)
-#       DISPLAYSURF.blit(bg, (0, 0))
         draw_board(main_board, revealed_boxes)
         font = pygame.font.SysFont("", 32)
 

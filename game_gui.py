@@ -3,19 +3,13 @@ import PySimpleGUI as sg
 
 
 def make_win1():
-    sg.theme('DarkGreen')
+    sg.theme('DarkBlue4')
     layout = [[sg.Text('Welcome to Memory Game', font='Arial 20 bold')],
               [sg.Text('Click exit to exit the game')],
               [sg.Button('Play', font='Arial 20 bold'), sg.Button('Game_rules', font='Arial 20 bold'), sg.Button('Exit', font='Arial 20 bold')]]
     return sg.Window('Memory Game', layout, element_justification='c', size=(1000, 600), finalize=True)
 
 
-def make_win2():
-    layout = [[sg.Text('Play')],
-              [sg.Input(key='-IN-', enable_events=True)],
-              [sg.Text(size=(40, 1), k='-OUTPUT-')],
-              [sg.Button('Erase'), sg.Button('Game_rules'), sg.Button('Exit')]]
-    return sg.Window('Play', layout, finalize=True)
 window1, window2 = make_win1(), None        # start off with 1 window open
 while True:             # Event Loop
     window, event, values = sg.read_all_windows()
