@@ -1,7 +1,7 @@
 from tkinter import *
 import random
 from tkinter import ttk
-import pygame
+
 
 global PuzzleWindow, tabs, easy, base1, base2, base3, ans1, ans2, ans3, board3, moves3, prev3, board2, moves2,\
         prev2, board1, moves1, prev1, window2, window3
@@ -82,6 +82,7 @@ def call(event):
 
 """Level 2"""
 
+    
 
 def draw1(a, x, y):
     global base2
@@ -289,12 +290,6 @@ def call3(event):
             prev3 = [i, j]
             return
 
-def background_music():
-    """Adding background music"""
-    pygame.mixer.init()
-    pygame.mixer.music.load('background_music.mp3')
-    pygame.mixer.music.play(loops=-1)
-    pygame.mixer.music.set_volume(0.05)
 
 def main():
     global PuzzleWindow, tabs, easy, base1, base2, base3, ans1, ans2, ans3, board3, moves3, prev3, board2, moves2,\
