@@ -1,3 +1,4 @@
+import game_gui
 import pygame
 import random
 import sys
@@ -230,6 +231,7 @@ def game_events(mouse_clicked, mousex, mousey):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
+            game_gui.main()
             sys.exit()
         if event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE:  # to display pause menu
             GAME_PAUSED = True
@@ -305,10 +307,9 @@ def main():  # sourcery no-metrics skip: none-compare
     background_music()    # to run background music
     FPS_CLOCK = pygame.time.Clock()   # in order to set general time for the game
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))    # to set the main window
-
     mousex = 0
     mousey = 0
-    pygame.display.set_caption('Minnes Spel ')
+    pygame.display.set_caption('Memory Game                                           Press Esc to se pause/exit menu')
 
     main_board = get_randomized_board()   # it randomize all the objects in the board
     revealed_boxes = generate_revealed_boxes_data(False)
@@ -318,7 +319,6 @@ def main():  # sourcery no-metrics skip: none-compare
     DISPLAYSURF.fill(BGCOLOR)
     start_game_animation(main_board)
     pygame.time.get_ticks()
-    pygame.time.wait(1000)
 
     while True:
         mouse_clicked = False

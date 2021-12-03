@@ -1,26 +1,12 @@
 from tkinter import *
 import random
 from tkinter import ttk
-import pygame
 
-PuzzleWindow = Tk()
-PuzzleWindow.title(' Minnes Spel ')
-tabs = ttk.Notebook(PuzzleWindow)
-easy = ttk.Frame(tabs)
+global PuzzleWindow, tabs, easy, base1, base2, base3, ans1, ans2, ans3, board3, moves3, prev3, board2, moves2,\
+        prev2, board1, moves1, prev1, window2, window3
 
 """ ttk.Notebook() manages the collection of windows and displays one window at a time.
 ttk.Frame() is basically a rectangular container for other widgets."""
-
-tabs.pack(expand=10, fill="both")
-
-
-def add_background_music():
-    """Adding background music"""
-    pygame.mixer.init()
-    pygame.mixer.music.load('background_music.mp3')
-    pygame.mixer.music.play(loops=-1)
-    pygame.mixer.music.set_volume(0.05)
-
 
 """Level 1"""
 
@@ -60,7 +46,7 @@ def quizboard():
                 draw(board1[i][j], i, j)
                 count += 1
     if count == 16:
-        base1.create_text(200, 450, text="Antal drag: " + str(moves1), font=('arial', 30))
+        base1.create_text(200, 450, text="No. of moves: " + str(moves1), font=('arial', 30))
 
 
 def call(event):
@@ -93,28 +79,7 @@ def call(event):
             prev1 = [i, j]
             return
 
-
-base1 = Canvas(easy, width=400, height=500)
-base1.pack()
-
-ans1 = list('AABBCCDDEEFFGGHH')
-"""Simple capital letters are used to denote the pairs and later
- in the draw function, a shape and color have associated for each letter. 
- So, ans1 is basically a well-shuffled 4×4 matrix of letters."""
-random.shuffle(ans1)
-ans1 = [ans1[:4],
-        ans1[4:8],
-        ans1[8:12],
-        ans1[12:]]
-
-base1.bind("<Button-1>", call)
-moves1 = 0
-prev1 = [100, 100]
-board1 = [list('.' * 4) for count in range(4)]
-quizboard()
-
 """Level 2"""
-window2 = ttk.Frame(tabs)
 
 
 def draw1(a, x, y):
@@ -200,33 +165,6 @@ def call2(event):
             puzzleboard2()
             prev2 = [i, j]
             return
-
-
-base2 = Canvas(window2, width=700, height=700)
-base2.pack()
-ans2 = list('AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRR')
-random.shuffle(ans2)
-ans2 = [ans2[:6],
-        ans2[6:12],
-        ans2[12:18],
-        ans2[18:24],
-        ans2[24:30],
-        ans2[30:]
-        ]
-base2.bind("<Button-1>", call2)
-
-moves2 = 0
-prev2 = [100, 100]
-board2 = [list('.' * 6) for _ in range(6)]
-puzzleboard2()
-
-"""Level 3"""
-
-window3 = ttk.Frame(tabs)
-tabs.add(easy, text='Enkel')
-tabs.add(window2, text='Medium')
-tabs.add(window3, text='Hård')
-tabs.pack(expand=10, fill="both")
 
 
 def draw2(a, x, y):
@@ -351,32 +289,86 @@ def call3(event):
             return
 
 
-base3 = Canvas(window3, width=700, height=700)
-base3.pack()
+def main():
+    global PuzzleWindow, tabs, easy, base1, base2, base3, ans1, ans2, ans3, board3, moves3, prev3, board2, moves2,\
+        prev2, board1, moves1, prev1, window2, window3
 
-ans3 = list('AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUWWXXYYZZaabbccddeeffgg')
-random.shuffle(ans3)
-ans3 = [ans3[:8],
-        ans3[8:16],
-        ans3[16:24],
-        ans3[24:32],
-        ans3[32:40],
-        ans3[40:48],
-        ans3[48:56],
-        ans3[56:]
-        ]
+    PuzzleWindow = Tk()
+    PuzzleWindow.title(' Memory Game ')
+    tabs = ttk.Notebook(PuzzleWindow)
+    easy = ttk.Frame(tabs)
+    """ Level 1"""
+    base1 = Canvas(easy, width=400, height=500)
+    base1.pack()
 
-base3.bind("<Button-1>", call3)
+    ans1 = list('AABBCCDDEEFFGGHH')
+    """Simple capital letters are used to denote the pairs and later
+     in the draw function, a shape and color have associated for each letter. 
+     So, ans1 is basically a well-shuffled 4×4 matrix of letters."""
+    random.shuffle(ans1)
+    ans1 = [ans1[:4],
+            ans1[4:8],
+            ans1[8:12],
+            ans1[12:]]
 
-moves3 = 0
+    base1.bind("<Button-1>", call)
+    moves1 = 0
+    prev1 = [100, 100]
+    board1 = [list('.' * 4) for _ in range(4)]
+    quizboard()
 
-prev3 = [80, 80]
+    """level 2"""
+    window2 = ttk.Frame(tabs)
+    base2 = Canvas(window2, width=700, height=700)
+    base2.pack()
+    ans2 = list('AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRR')
+    random.shuffle(ans2)
+    ans2 = [ans2[:6],
+            ans2[6:12],
+            ans2[12:18],
+            ans2[18:24],
+            ans2[24:30],
+            ans2[30:]
+            ]
+    base2.bind("<Button-1>", call2)
 
-board3 = [list('.' * 8) for _ in range(8)]
-quizboard3()
-add_background_music()
+    moves2 = 0
+    prev2 = [100, 100]
+    board2 = [list('.' * 6) for _ in range(6)]
+    puzzleboard2()
+
+    """level 3"""
+    window3 = ttk.Frame(tabs)
+    tabs.add(easy, text='Easy')
+    tabs.add(window2, text='Medium')
+    tabs.add(window3, text='Hard')
+    tabs.pack(expand=10, fill="both")
+
+    base3 = Canvas(window3, width=700, height=700)
+    base3.pack()
+
+    ans3 = list('AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUWWXXYYZZaabbccddeeffgg')
+    random.shuffle(ans3)
+    ans3 = [ans3[:8],
+            ans3[8:16],
+            ans3[16:24],
+            ans3[24:32],
+            ans3[32:40],
+            ans3[40:48],
+            ans3[48:56],
+            ans3[56:]
+            ]
+
+    base3.bind("<Button-1>", call3)
+
+    moves3 = 0
+
+    prev3 = [80, 80]
+
+    board3 = [list('.' * 8) for _ in range(8)]
+    quizboard3()
+    mainloop()
 
 
 if __name__ == '__main__':
-    mainloop()
- 
+    main()
